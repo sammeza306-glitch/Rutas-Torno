@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Control de Rutas de Trabajo</title>
+  <style>
+    :root {
+      --bg-main: #f1f5f9;
+      --card-bg: #ffffff;
+      --primary: #0284c7;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #cbd5e1;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg-main); color: var(--text); padding: 20px; }
+
+    header {
+      max-width: 1000px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    h1 { font-size: 1.5rem; color: #1e293b; }
+
+    .search-box {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto 24px auto;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .search-box input:focus { border-color: var(--primary); }
+
+    .grid {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* Estatus por color */
+    .status-pendiente { background: #fee2e2; color: #991b1b; }
+    .status-en-proceso { background: #fef3c7; color: #92400e; }
+    .status-terminado { background: #dcfce7; color: #166534; }
+
+    .card-body p { font-size: 0.9rem; margin-bottom: 6px; color: var(--text-muted); }
+    .card-body strong { color: var(--text); }
+
+    .card-actions {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+      flex-grow: 1;
+    }
+
+    button {
+      padding: 6px 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    button:hover { opacity: 0.9; }
+
+    .loading { text-align: center; color: var(--text-muted); grid-column: 1 / -1; padding: 40px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Control de Rutas y Fabricación</h1>
+    <button onclick="cargarRutas()">🔄 Actualizar datos</button>
+  </header>
+
+  <div class="search-box">
+    <input type="text" id="buscador" placeholder="Escribe el ID, descripción o máquina..." oninput="filtrarRutas()" />
+  </div>
+
+  <div class="grid" id="contenedorRutas">
+    <div class="loading">Cargando rutas desde Google Sheets...</div>
+  </div>
+
+  <script>
+    // PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
+    const API_URL = "https://script.google.com/macros/s/TU_SCRIPT_ID/exec";
+
+    let todasLasRutas = [];
+
+    async function cargarRutas() {
+      const contenedor = document.getElementById("contenedorRutas");
+      contenedor.innerHTML = '<div class="loading">Sincronizando con base de datos...</div>';
+      
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        todasLasRutas = data.data;
+        renderRutas(todasLasRutas);
+      } catch (err) {
+        contenedor.innerHTML = '<div class="loading">Error al conectar con la base de datos. Verifica la URL.</div>';
+      }
+    }
+
+    function renderRutas(rutas) {
+      const contenedor = document.getElementById("contenedorRutas");
+      contenedor.innerHTML = "";
+
+      if (rutas.length === 0) {
+        contenedor.innerHTML = '<div class="loading">No se encontraron rutas con esa búsqueda.</div>';
+        return;
+      }
+
+      rutas.forEach(item => {
+        const estatusClass = normalizarClase(item.estatus);
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div>
+            <div class="card-header">
+              <h3>${item.id}</h3>
+              <span class="badge ${estatusClass}">${item.estatus || 'Sin estado'}</span>
+            </div>
+            <div class="card-body">
+              <p><strong>Descripción:</strong> ${item.descripcion}</p>
+              <p><strong>Máquina:</strong> ${item.maquina}</p>
+              <p><strong>Operación:</strong> ${item.operaciones}</p>
+            </div>
+          </div>
+          <div class="card-actions">
+            <select id="select-${item.rowIndex}">
+              <option value="Pendiente" ${item.estatus === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+              <option value="En proceso" ${item.estatus === 'En proceso' ? 'selected' : ''}>En proceso</option>
+              <option value="Terminado" ${item.estatus === 'Terminado' ? 'selected' : ''}>Terminado</option>
+            </select>
+            <button onclick="guardarEstatus(${item.rowIndex})">Guardar</button>
+          </div>
+        `;
+        contenedor.appendChild(card);
+      });
+    }
+
+    function filtrarRutas() {
+      const texto = document.getElementById("buscador").value.toLowerCase();
+      const filtradas = todasLasRutas.filter(r => 
+        String(r.id).toLowerCase().includes(texto) ||
+        String(r.descripcion).toLowerCase().includes(texto) ||
+        String(r.maquina).toLowerCase().includes(texto)
+      );
+      renderRutas(filtradas);
+    }
+
+    async function guardarEstatus(rowIndex) {
+      const select = document.getElementById(`select-${rowIndex}`);
+      const nuevoEstatus = select.value;
+
+      try {
+        await fetch(API_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rowIndex, nuevoEstatus })
+        });
+        alert("Estatus enviado a Google Sheets.");
+        cargarRutas();
+      } catch (err) {
+        alert("Error al actualizar estatus.");
+      }
+    }
+
+    function normalizarClase(estatus) {
+      const st = String(estatus).toLowerCase();
+      if (st.includes("proceso")) return "status-en-proceso";
+      if (st.includes("terminado") || st.includes("liberado")) return "status-terminado";
+      return "status-pendiente";
+    }
+
+    // Carga inicial
+    cargarRutas();
+  </script>
+</body>
+</html>
