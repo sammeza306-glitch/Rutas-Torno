@@ -327,7 +327,7 @@
             <thead>
               <tr>
                 <th style="width: 65px;">Sec.</th>
-                <th style="width: 100px;">Recurso (CR/CT)</th>
+                <th style="width: 110px;">Recurso (CR)</th>
                 <th style="width: 130px;">Operación</th>
                 <th>Descripción Detallada</th>
                 <th style="width: 80px;">Tiempo (J)</th>
@@ -478,7 +478,8 @@
       if (valor === "" || valor === null || valor === undefined || valor === "0.00") return "-";
       return valor;
     }
-/* MODAL */
+
+    /* MODAL DE ALTA */
     function abrirModal() {
       document.getElementById("modalAlta").style.display = "flex";
       document.getElementById("mFilasBody").innerHTML = "";
@@ -541,8 +542,6 @@
       }
     }
 
-    }
-
     async function enviarNuevaRuta() {
       const codigo = document.getElementById("mCodigo").value.trim().toUpperCase();
       const nombre = document.getElementById("mNombre").value.trim();
@@ -578,9 +577,9 @@
           sec,        // Col B: Secuencia
           sec,        // Col C: Secuencia
           sec,        // Col D: Secuencia
-          op,         // Col E: Operación (B de Configuración)
-          ct,         // Col F: Recurso (G de Configuración)
-          desc,       // Col G: Descripcion Detallada (C de Configuración)
+          op,         // Col E: Operación
+          ct,         // Col F: Recurso
+          desc,       // Col G: Descripcion Detallada
           "0",        // Col H: 0
           "0",        // Col I: 0
           tiempo,     // Col J: Tiempo de Operación
@@ -593,7 +592,7 @@
           obs,        // Col Q: Acción implementada
           notas,      // Col R: Notas
           nombre,     // Col S: Descripción del Artículo
-          statusSAP   // Col T: Status en Archivo "Rutas Masivsa SAP"
+          statusSAP   // Col T: Status en SAP
         ]);
       });
 
@@ -624,6 +623,7 @@
       }
     }
 
+    // Carga inicial al abrir la página
     cargarDatos();
   </script>
 </body>
