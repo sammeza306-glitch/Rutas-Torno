@@ -265,7 +265,7 @@
       }
     }
 
-    function cambiarArticulo(codigo) {
+function cambiarArticulo(codigo) {
       codigo = codigo.trim().toUpperCase();
       const cuerpo = document.getElementById("tablaBody");
       const nombreBanner = document.getElementById("articuloNombre");
@@ -286,30 +286,30 @@
       const totalFilas = rutas.length;
       cuerpo.innerHTML = "";
 
-      // Tomamos la primera nota y status no vacíos que tenga la pieza
-      const primeraNota = rutas.find(r => r.colQ && r.colQ !== "0" && r.colQ !== "0.00")?.colQ || "";
-      const primerStatus = rutas.find(r => r.colR && r.colR !== "0" && r.colR !== "0.00")?.colR || "";
+      // Tomamos el valor de R y T (primer valor no vacío de la pieza para la celda combinada)
+      const valorR = rutas.find(r => r.colR && r.colR !== "0" && r.colR !== "0.00")?.colR || "-";
+      const valorT = rutas.find(r => r.colT && r.colT !== "0" && r.colT !== "0.00")?.colT || "-";
 
       rutas.forEach((r, index) => {
         const tr = document.createElement("tr");
 
+        // Columnas estándar de cada fila (B, E, F, G, J y ahora Q por fila)
         let celdasHTML = `
           <td style="font-weight: 700;">${r.colB || String(index + 1).padStart(2, "0")}</td>
           <td>${limpiarValor(r.colE)}</td>
           <td>${limpiarValor(r.colF)}</td>
           <td>${limpiarValor(r.colG)}</td>
           <td>${limpiarValor(r.colJ)}</td>
+          <td>${limpiarValor(r.colQ)}</td>
         `;
 
-        // En la primera fila creamos la celda combinada (rowspan) que abarca todas las operaciones
+        // Columnas R y T combinadas verticalmente para toda la pieza
         if (index === 0) {
           celdasHTML += `
-            <td rowspan="${totalFilas}" class="merged-cell">${primeraNota}</td>
-            <td rowspan="${totalFilas}" class="merged-cell"><span class="badge-status">${primerStatus}</span></td>
+            <td rowspan="${totalFilas}" class="merged-cell"><span class="badge-status">${valorR}</span></td>
+            <td rowspan="${totalFilas}" class="merged-cell">${valorT}</td>
           `;
         }
-
-        celdasHTML += `<td>${limpiarValor(r.colT)}</td>`;
 
         tr.innerHTML = celdasHTML;
         cuerpo.appendChild(tr);
