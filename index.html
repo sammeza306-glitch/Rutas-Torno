@@ -3,138 +3,113 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rutas de Operación</title>
+  <title>Rutas de Operación // Control Técnico</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;600;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
   
   <style>
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      font-family: 'Inter', system-ui, -apple-system, sans-serif; 
-    }
-
-    body { 
-      background: #f1f5f9; 
-      padding: 24px; 
-      color: #0f172a; 
-      -webkit-font-smoothing: antialiased;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto Condensed', Arial, sans-serif; }
+    body { background-color: #dbe0e6; padding: 12px; color: #1e293b; }
 
     .window {
       background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+      border: 1px solid #64748b;
+      border-radius: 2px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
       max-width: 1440px;
       margin: 0 auto;
       overflow: hidden;
     }
 
     .window-title {
-      background: #ffffff;
-      border-bottom: 1px solid #e2e8f0;
-      padding: 14px 20px;
+      background: #334155;
+      color: #f8fafc;
+      padding: 6px 14px;
       font-weight: 700;
-      font-size: 1.05rem;
-      color: #0f172a;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .btn-sync {
-      padding: 8px 16px;
-      background: #0284c7;
+    .btn-group { display: flex; gap: 8px; }
+
+    .btn-action {
+      padding: 4px 12px;
+      background: #475569;
       color: #ffffff;
-      border: none;
-      border-radius: 6px;
+      border: 1px solid #94a3b8;
+      border-radius: 2px;
       cursor: pointer;
-      font-size: 0.82rem;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.15s ease, transform 0.05s ease;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
-
-    .btn-sync:hover { 
-      background: #0369a1; 
-    }
-
-    .btn-sync:active {
-      transform: scale(0.98);
-    }
+    .btn-action:hover { background: #1e293b; }
+    .btn-add { background: #0284c7; border-color: #0284c7; }
+    .btn-add:hover { background: #0369a1; }
 
     .top-panel {
-      padding: 16px 20px;
-      background: #f8fafc;
-      border-bottom: 1px solid #e2e8f0;
+      padding: 8px 14px;
+      background: #f1f5f9;
+      border-bottom: 2px solid #94a3b8;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
     .selector-label {
-      font-weight: 600;
-      font-size: 0.82rem;
+      font-weight: 700;
+      font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: #64748b;
+      color: #475569;
     }
 
     .input-code {
-      padding: 8px 12px;
+      padding: 5px 8px;
       font-size: 0.95rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      width: 170px;
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 700;
+      border: 1px solid #64748b;
+      border-radius: 2px;
+      width: 150px;
       text-transform: uppercase;
       text-align: center;
       background: #ffffff;
-      color: #0f172a;
       outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
     }
-
-    .input-code:focus {
-      border-color: #0284c7;
-      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
-    }
+    .input-code:focus { border-color: #0f172a; background-color: #f8fafc; }
 
     select.item-list {
-      padding: 8px 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      font-size: 0.88rem;
-      color: #1e293b;
+      padding: 5px 8px;
+      border: 1px solid #64748b;
+      border-radius: 2px;
+      font-size: 0.85rem;
+      font-weight: 600;
       background: #ffffff;
       cursor: pointer;
-      max-width: 240px;
+      max-width: 220px;
       outline: none;
-      transition: border-color 0.15s;
-    }
-
-    select.item-list:focus {
-      border-color: #0284c7;
     }
 
     .item-name-banner {
       flex-grow: 1;
-      min-width: 280px;
+      min-width: 260px;
       background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-left: 4px solid #0284c7;
-      padding: 10px 16px;
-      font-size: 1.02rem;
+      border: 1px solid #94a3b8;
+      border-left: 5px solid #334155;
+      padding: 6px 12px;
+      font-size: 1rem;
       font-weight: 700;
+      letter-spacing: 0.02em;
       color: #0f172a;
-      border-radius: 6px;
+      border-radius: 2px;
     }
 
     .table-responsive {
@@ -146,62 +121,130 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.86rem;
+      font-size: 0.82rem;
       white-space: nowrap;
     }
 
     thead th {
       position: sticky;
       top: 0;
-      background: #f8fafc;
-      color: #475569;
-      font-weight: 600;
+      background: #e2e8f0;
+      color: #0f172a;
+      font-weight: 700;
       font-size: 0.78rem;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 12px 14px;
-      border-bottom: 2px solid #e2e8f0;
-      border-right: 1px solid #f1f5f9;
+      letter-spacing: 0.03em;
+      padding: 7px 10px;
+      border: 1px solid #94a3b8;
+      border-bottom: 2px solid #475569;
       text-align: center;
       z-index: 10;
     }
 
     tbody td {
-      padding: 11px 14px;
-      border-bottom: 1px solid #f1f5f9;
-      border-right: 1px solid #f1f5f9;
-      color: #334155;
+      padding: 5px 8px;
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
       text-align: center;
       vertical-align: middle;
+      font-variant-numeric: tabular-nums;
     }
 
-    tbody tr:nth-child(even) { 
-      background-color: #fafbfd; 
-    }
-
-    tbody tr:hover { 
-      background-color: #f0f7ff; 
-    }
+    tbody tr:nth-child(even) { background-color: #f8fafc; }
+    tbody tr:hover { background-color: #e2e8f0; }
 
     .merged-cell {
       background-color: #ffffff !important;
-      font-weight: 500;
-      padding: 16px;
+      font-weight: 600;
+      padding: 10px;
       white-space: normal;
       max-width: 320px;
       text-align: center;
       vertical-align: middle;
-      border-left: 1px solid #f1f5f9;
+      border: 1px solid #94a3b8 !important;
     }
 
     .badge-status {
       display: inline-block;
-      padding: 5px 12px;
-      background: #e0f2fe;
-      color: #0369a1;
-      font-weight: 600;
-      font-size: 0.8rem;
-      border-radius: 9999px;
+      padding: 3px 8px;
+      background: #e2e8f0;
+      border: 1px solid #94a3b8;
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 0.76rem;
+      letter-spacing: 0.03em;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+
+    /* MODAL DE ALTA DE RUTA */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border: 2px solid #334155;
+      width: 100%;
+      max-width: 950px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .modal-header {
+      background: #334155;
+      color: #fff;
+      padding: 8px 16px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-body {
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .modal-grid-header {
+      display: grid;
+      grid-template-columns: 160px 1fr 200px;
+      gap: 12px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #475569; }
+    .form-group input { padding: 6px 8px; border: 1px solid #94a3b8; font-size: 0.88rem; outline: none; }
+    .form-group input:focus { border-color: #0284c7; }
+
+    .modal-ops-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    .modal-ops-table th { background: #e2e8f0; font-size: 0.75rem; padding: 6px; border: 1px solid #94a3b8; text-transform: uppercase; }
+    .modal-ops-table td { padding: 4px; border: 1px solid #cbd5e1; }
+    .modal-ops-table input { width: 100%; padding: 4px; border: 1px solid #cbd5e1; font-size: 0.82rem; text-align: center; }
+
+    .btn-remove-row {
+      background: #ef4444; color: #fff; border: none; padding: 4px 8px; cursor: pointer; font-weight: bold; border-radius: 2px;
+    }
+
+    .modal-footer {
+      padding: 10px 16px;
+      background: #f1f5f9;
+      border-top: 1px solid #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
   </style>
 </head>
@@ -209,28 +252,31 @@
 
   <div class="window">
     <div class="window-title">
-      <span>Rutas de Operación</span>
-      <button class="btn-sync" onclick="cargarDatos()">🔄 Recargar Hoja</button>
+      <span>Rutas de Operación // Control Técnico</span>
+      <div class="btn-group">
+        <button class="btn-action btn-add" onclick="abrirModal()">➕ Nueva Ruta</button>
+        <button class="btn-action" onclick="cargarDatos()">🔄 Recargar Hoja</button>
+      </div>
     </div>
 
     <div class="top-panel">
       <span class="selector-label">Artículo:</span>
-      <input type="text" id="inputArticulo" class="input-code" placeholder="Código..." list="listaCodigos" oninput="cambiarArticulo(this.value)">
+      <input type="text" id="inputArticulo" class="input-code" placeholder="CÓDIGO..." list="listaCodigos" oninput="cambiarArticulo(this.value)">
       <datalist id="listaCodigos"></datalist>
 
       <span class="selector-label">Seleccionar:</span>
       <select id="selectArticulo" class="item-list" onchange="cambiarArticulo(this.value)">
-        <option value="">-- Seleccionar --</option>
+        <option value="">-- SELECCIONAR --</option>
       </select>
 
-      <div id="articuloNombre" class="item-name-banner">Selecciona un artículo</div>
+      <div id="articuloNombre" class="item-name-banner">SELECCIONA UN ARTÍCULO</div>
     </div>
 
     <div class="table-responsive">
       <table>
         <thead>
           <tr>
-            <th style="width: 80px;" id="thB">Secuencia</th>
+            <th style="width: 70px;" id="thB">Secuencia</th>
             <th id="thE">E</th>
             <th id="thF">F</th>
             <th id="thG">G</th>
@@ -242,10 +288,65 @@
         </thead>
         <tbody id="tablaBody">
           <tr>
-            <td colspan="8" style="padding: 48px; color: #64748b;">Cargando datos desde Google Sheets...</td>
+            <td colspan="8" style="padding: 32px; color: #475569; font-weight: 600;">CARGANDO REGISTROS TÉCNICOS...</td>
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- MODAL DE CAPTURA NUEVA RUTA -->
+  <div id="modalAlta" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span>Captura de Ruta Técnica</span>
+        <button onclick="cerrarModal()" style="background:none; border:none; color:#fff; font-size:1.1rem; cursor:pointer;">✖</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-grid-header">
+          <div class="form-group">
+            <label>Artículo Padre (Código)</label>
+            <input type="text" id="mCodigo" placeholder="Ej: A1102002" style="font-family:'Roboto Mono'; font-weight:bold; text-transform:uppercase;">
+          </div>
+          <div class="form-group">
+            <label>Descripción del Artículo</label>
+            <input type="text" id="mNombre" placeholder="Nombre completo del producto...">
+          </div>
+          <div class="form-group">
+            <label>Status en Archivo SAP</label>
+            <input type="text" id="mStatusSAP" value="En Orden (Check1)">
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 4px;">
+            <label style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#475569;">Secuencia de Operaciones</label>
+            <button class="btn-action" type="button" onclick="agregarFilaOperacion()">➕ Agregar Paso</button>
+          </div>
+          <table class="modal-ops-table">
+            <thead>
+              <tr>
+                <th style="width: 70px;">Secuencia</th>
+                <th style="width: 140px;">Operación</th>
+                <th style="width: 100px;">Recurso (CT)</th>
+                <th>Descripción Detallada</th>
+                <th style="width: 80px;">Tiempo (J)</th>
+                <th>Observaciones (Q)</th>
+                <th>Notas (R)</th>
+                <th style="width: 40px;"></th>
+              </tr>
+            </thead>
+            <tbody id="mFilasBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span id="mMsg" style="font-weight:700; font-size:0.85rem;"></span>
+        <div class="btn-group">
+          <button class="btn-action" onclick="cerrarModal()">Cancelar</button>
+          <button class="btn-action btn-add" id="btnGuardarRuta" onclick="enviarNuevaRuta()">💾 Guardar en Entrada_Web</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -258,7 +359,7 @@
 
     async function cargarDatos() {
       const cuerpo = document.getElementById("tablaBody");
-      cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 48px; color: #64748b;">Sincronizando información...</td></tr>';
+      cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 32px; color: #475569; font-weight: 600;">SINCRONIZANDO CON BASE DE DATOS...</td></tr>';
 
       try {
         const res = await fetch(API_URL);
@@ -276,14 +377,14 @@
 
           if (!agrupadoPorArticulo[itemCode]) {
             agrupadoPorArticulo[itemCode] = [];
-            nombresArticulos[itemCode] = row.colS || "Sin descripción asignada";
+            nombresArticulos[itemCode] = row.colS || "SIN DESCRIPCIÓN";
           }
           agrupadoPorArticulo[itemCode].push(row);
         });
 
         poblarListas();
       } catch (err) {
-        cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 48px; color: #ef4444;">Error al conectar con la hoja. Verifica tu conexión y permisos.</td></tr>';
+        cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 32px; color: #b91c1c; font-weight: 700;">ERROR DE CONEXIÓN CON LA HOJA</td></tr>';
       }
     }
 
@@ -303,7 +404,7 @@
       const selector = document.getElementById("selectArticulo");
 
       datalist.innerHTML = "";
-      selector.innerHTML = '<option value="">-- Seleccionar --</option>';
+      selector.innerHTML = '<option value="">-- SELECCIONAR --</option>';
 
       const articulos = Object.keys(agrupadoPorArticulo).sort();
 
@@ -334,12 +435,12 @@
       select.value = codigo;
 
       if (!agrupadoPorArticulo[codigo]) {
-        nombreBanner.textContent = "Artículo no encontrado";
-        cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 36px; color: #64748b;">No existen registros para este artículo.</td></tr>';
+        nombreBanner.textContent = "ARTÍCULO NO ENCONTRADO";
+        cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 24px; color: #64748b; font-weight: 600;">NO EXISTEN REGISTROS ASOCIADOS</td></tr>';
         return;
       }
 
-      nombreBanner.textContent = nombresArticulos[codigo] || "Artículo sin nombre";
+      nombreBanner.textContent = (nombresArticulos[codigo] || "SIN NOMBRE").toUpperCase();
       const rutas = agrupadoPorArticulo[codigo];
       const totalFilas = rutas.length;
       cuerpo.innerHTML = "";
@@ -351,7 +452,7 @@
         const tr = document.createElement("tr");
 
         let celdasHTML = `
-          <td style="font-weight: 700; font-family: 'JetBrains Mono', monospace;">${r.colB || String(index + 1).padStart(2, "0")}</td>
+          <td style="font-weight: 700; font-family: 'Roboto Mono', monospace;">${r.colB || String(index + 1).padStart(2, "0")}</td>
           <td>${limpiarValor(r.colE)}</td>
           <td>${limpiarValor(r.colF)}</td>
           <td>${limpiarValor(r.colG)}</td>
@@ -374,6 +475,121 @@
     function limpiarValor(valor) {
       if (valor === "" || valor === null || valor === undefined || valor === "0.00") return "-";
       return valor;
+    }
+
+    /* CONTROL DEL MODAL Y ENVÍO POST */
+    function abrirModal() {
+      document.getElementById("modalAlta").style.display = "flex";
+      document.getElementById("mFilasBody").innerHTML = "";
+      document.getElementById("mCodigo").value = "";
+      document.getElementById("mNombre").value = "";
+      document.getElementById("mMsg").textContent = "";
+      agregarFilaOperacion(10);
+    }
+
+    function cerrarModal() {
+      document.getElementById("modalAlta").style.display = "none";
+    }
+
+    function agregarFilaOperacion(secuenciaSugerida) {
+      const tbody = document.getElementById("mFilasBody");
+      const total = tbody.children.length;
+      const sec = secuenciaSugerida || (total + 1) * 10;
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input type="number" class="row-sec" value="${sec}"></td>
+        <td><input type="text" class="row-op" placeholder="Ej: Torneado"></td>
+        <td><input type="text" class="row-ct" placeholder="Ej: CT0401" style="font-weight:bold; text-transform:uppercase;"></td>
+        <td><input type="text" class="row-desc" placeholder="Detalle técnico de operación"></td>
+        <td><input type="number" step="0.01" class="row-tiempo" value="0.00"></td>
+        <td><input type="text" class="row-obs" placeholder="Observaciones"></td>
+        <td><input type="text" class="row-notas" placeholder="Notas"></td>
+        <td><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">✖</button></td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    async function enviarNuevaRuta() {
+      const codigo = document.getElementById("mCodigo").value.trim().toUpperCase();
+      const nombre = document.getElementById("mNombre").value.trim();
+      const statusSAP = document.getElementById("mStatusSAP").value.trim();
+      const msg = document.getElementById("mMsg");
+      const btnGuardar = document.getElementById("btnGuardarRuta");
+
+      if (!codigo || !nombre) {
+        msg.style.color = "#ef4444";
+        msg.textContent = "El código y la descripción son obligatorios.";
+        return;
+      }
+
+      const filasTR = document.querySelectorAll("#mFilasBody tr");
+      if (filasTR.length === 0) {
+        msg.style.color = "#ef4444";
+        msg.textContent = "Agrega al menos una operación.";
+        return;
+      }
+
+      // Estructurar el arreglo exacto de 20 columnas (A a la T)
+      const filasAEnviar = [];
+      filasTR.forEach(tr => {
+        const sec = tr.querySelector(".row-sec").value;
+        const op = tr.querySelector(".row-op").value;
+        const ct = tr.querySelector(".row-ct").value.toUpperCase();
+        const desc = tr.querySelector(".row-desc").value;
+        const tiempo = tr.querySelector(".row-tiempo").value;
+        const obs = tr.querySelector(".row-obs").value;
+        const notas = tr.querySelector(".row-notas").value;
+
+        filasAEnviar.push([
+          codigo,     // Col A: Artículo Padre
+          sec,        // Col B: Secuencia
+          sec,        // Col C: Secuencia
+          sec,        // Col D: Secuencia
+          op,         // Col E: Operación
+          ct,         // Col F: Recurso
+          desc,       // Col G: Descripcion
+          "0",        // Col H: SIEMPRE PONER 0
+          "0",        // Col I: SIEMPRE PONER 0
+          tiempo,     // Col J: Tiempo de Operación
+          "J",        // Col K: SIEMPRE PONER J
+          "1",        // Col L: SIEMPRE PONER 1
+          "1",        // Col M: SIEMPRE PONER 1
+          "PROD",     // Col N: SIEMPRE PONER PROD
+          "PROD",     // Col O: SIEMPRE PONER PROD
+          "PROD",     // Col P: SIEMPRE PONER PROD
+          obs,        // Col Q: Observaciones
+          notas,      // Col R: Notas
+          nombre,     // Col S: Descripción del Artículo
+          statusSAP   // Col T: Status en Archivo "Rutas Masivsa SAP"
+        ]);
+      });
+
+      msg.style.color = "#0284c7";
+      msg.textContent = "Enviando a Entrada_Web...";
+      btnGuardar.disabled = true;
+
+      try {
+        await fetch(API_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ filas: filasAEnviar })
+        });
+
+        msg.style.color = "#16a34a";
+        msg.textContent = "¡Ruta registrada exitosamente!";
+        setTimeout(() => {
+          cerrarModal();
+          cargarDatos();
+          btnGuardar.disabled = false;
+        }, 1200);
+
+      } catch (err) {
+        msg.style.color = "#ef4444";
+        msg.textContent = "Error al conectar con el servidor.";
+        btnGuardar.disabled = false;
+      }
     }
 
     cargarDatos();
