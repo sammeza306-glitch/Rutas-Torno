@@ -478,15 +478,32 @@
       if (valor === "" || valor === null || valor === undefined || valor === "0.00") return "-";
       return valor;
     }
-
-    /* MODAL */
+/* MODAL */
     function abrirModal() {
       document.getElementById("modalAlta").style.display = "flex";
       document.getElementById("mFilasBody").innerHTML = "";
       document.getElementById("mCodigo").value = "";
       document.getElementById("mNombre").value = "";
       document.getElementById("mMsg").textContent = "";
+      
+      generarDatalistCR();
       agregarFilaOperacion(10);
+    }
+
+    function generarDatalistCR() {
+      let dl = document.getElementById("listaCR");
+      if (!dl) {
+        dl = document.createElement("datalist");
+        dl.id = "listaCR";
+        document.body.appendChild(dl);
+      }
+      dl.innerHTML = "";
+      Object.keys(catalogoCT).sort().forEach(crKey => {
+        const opt = document.createElement("option");
+        opt.value = crKey;
+        opt.label = catalogoCT[crKey].operacion;
+        dl.appendChild(opt);
+      });
     }
 
     function cerrarModal() {
@@ -501,7 +518,7 @@
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td><input type="number" class="row-sec" value="${sec}"></td>
-        <td><input type="text" class="row-ct" placeholder="Ej: CT0401" oninput="autocompletarDesdeCR(this)" style="font-weight:bold; text-transform:uppercase;"></td>
+        <td><input type="text" class="row-ct" list="listaCR" placeholder="Ej: CR0101" oninput="autocompletarDesdeCR(this)" style="font-weight:bold; text-transform:uppercase;"></td>
         <td><input type="text" class="row-op" placeholder="Operación"></td>
         <td><input type="text" class="row-desc" placeholder="Descripción detallada"></td>
         <td><input type="number" step="0.01" class="row-tiempo" value="0.00"></td>
@@ -518,10 +535,12 @@
       const inputOp = fila.querySelector(".row-op");
       const inputDesc = fila.querySelector(".row-desc");
 
-      if (catalogoCT[cr]) {
-        inputOp.value = catalogoCT[cr].operacion;
-        inputDesc.value = catalogoCT[cr].descripcion;
+      if (catalogoCT && catalogoCT[cr]) {
+        inputOp.value = catalogoCT[cr].operacion || "";
+        inputDesc.value = catalogoCT[cr].descripcion || "";
       }
+    }
+
     }
 
     async function enviarNuevaRuta() {
