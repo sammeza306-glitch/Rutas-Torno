@@ -177,7 +177,7 @@
       text-transform: uppercase;
     }
 
-    /* MODAL DE ALTA DE RUTA */
+    /* MODAL */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -193,7 +193,7 @@
       background: #ffffff;
       border: 2px solid #334155;
       width: 100%;
-      max-width: 950px;
+      max-width: 1050px;
       max-height: 90vh;
       display: flex;
       flex-direction: column;
@@ -277,13 +277,13 @@
         <thead>
           <tr>
             <th style="width: 70px;" id="thB">Secuencia</th>
-            <th id="thE">E</th>
-            <th id="thF">F</th>
-            <th id="thG">G</th>
-            <th id="thJ">J</th>
-            <th id="thQ">Notas</th>
-            <th id="thR">Status</th>
-            <th id="thT">T</th>
+            <th id="thE">Operación</th>
+            <th id="thF">Recurso</th>
+            <th id="thG">Descripción Detallada</th>
+            <th id="thJ">Tiempo de Operación</th>
+            <th id="thQ">Acción implementada</th>
+            <th id="thR">Notas</th>
+            <th id="thT">Status</th>
           </tr>
         </thead>
         <tbody id="tablaBody">
@@ -295,7 +295,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE CAPTURA NUEVA RUTA -->
+  <!-- MODAL DE CAPTURA -->
   <div id="modalAlta" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
@@ -326,14 +326,14 @@
           <table class="modal-ops-table">
             <thead>
               <tr>
-                <th style="width: 70px;">Secuencia</th>
-                <th style="width: 140px;">Operación</th>
-                <th style="width: 100px;">Recurso (CT)</th>
+                <th style="width: 65px;">Sec.</th>
+                <th style="width: 100px;">Recurso (CR/CT)</th>
+                <th style="width: 130px;">Operación</th>
                 <th>Descripción Detallada</th>
                 <th style="width: 80px;">Tiempo (J)</th>
-                <th>Observaciones (Q)</th>
-                <th>Notas (R)</th>
-                <th style="width: 40px;"></th>
+                <th>Acción implementada</th>
+                <th>Notas</th>
+                <th style="width: 35px;"></th>
               </tr>
             </thead>
             <tbody id="mFilasBody"></tbody>
@@ -356,6 +356,7 @@
     let agrupadoPorArticulo = {};
     let nombresArticulos = {};
     let encabezados = {};
+    let catalogoCT = {};
 
     async function cargarDatos() {
       const cuerpo = document.getElementById("tablaBody");
@@ -366,6 +367,7 @@
         const data = await res.json();
         
         encabezados = data.headers || {};
+        catalogoCT = data.catalogoCT || {};
         actualizarNombresEncabezados();
 
         agrupadoPorArticulo = {};
@@ -462,8 +464,8 @@
 
         if (index === 0) {
           celdasHTML += `
-            <td rowspan="${totalFilas}" class="merged-cell"><span class="badge-status">${valorR}</span></td>
-            <td rowspan="${totalFilas}" class="merged-cell">${valorT}</td>
+            <td rowspan="${totalFilas}" class="merged-cell">${valorR}</td>
+            <td rowspan="${totalFilas}" class="merged-cell"><span class="badge-status">${valorT}</span></td>
           `;
         }
 
@@ -477,7 +479,7 @@
       return valor;
     }
 
-    /* CONTROL DEL MODAL Y ENVÍO POST */
+    /* MODAL */
     function abrirModal() {
       document.getElementById("modalAlta").style.display = "flex";
       document.getElementById("mFilasBody").innerHTML = "";
@@ -499,15 +501,27 @@
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td><input type="number" class="row-sec" value="${sec}"></td>
-        <td><input type="text" class="row-op" placeholder="Ej: Torneado"></td>
-        <td><input type="text" class="row-ct" placeholder="Ej: CT0401" style="font-weight:bold; text-transform:uppercase;"></td>
-        <td><input type="text" class="row-desc" placeholder="Detalle técnico de operación"></td>
+        <td><input type="text" class="row-ct" placeholder="Ej: CT0401" oninput="autocompletarDesdeCR(this)" style="font-weight:bold; text-transform:uppercase;"></td>
+        <td><input type="text" class="row-op" placeholder="Operación"></td>
+        <td><input type="text" class="row-desc" placeholder="Descripción detallada"></td>
         <td><input type="number" step="0.01" class="row-tiempo" value="0.00"></td>
-        <td><input type="text" class="row-obs" placeholder="Observaciones"></td>
+        <td><input type="text" class="row-obs" placeholder="Acción implementada"></td>
         <td><input type="text" class="row-notas" placeholder="Notas"></td>
         <td><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">✖</button></td>
       `;
       tbody.appendChild(tr);
+    }
+
+    function autocompletarDesdeCR(input) {
+      const cr = input.value.trim().toUpperCase();
+      const fila = input.closest("tr");
+      const inputOp = fila.querySelector(".row-op");
+      const inputDesc = fila.querySelector(".row-desc");
+
+      if (catalogoCT[cr]) {
+        inputOp.value = catalogoCT[cr].operacion;
+        inputDesc.value = catalogoCT[cr].descripcion;
+      }
     }
 
     async function enviarNuevaRuta() {
@@ -530,12 +544,11 @@
         return;
       }
 
-      // Estructurar el arreglo exacto de 20 columnas (A a la T)
       const filasAEnviar = [];
       filasTR.forEach(tr => {
         const sec = tr.querySelector(".row-sec").value;
-        const op = tr.querySelector(".row-op").value;
         const ct = tr.querySelector(".row-ct").value.toUpperCase();
+        const op = tr.querySelector(".row-op").value;
         const desc = tr.querySelector(".row-desc").value;
         const tiempo = tr.querySelector(".row-tiempo").value;
         const obs = tr.querySelector(".row-obs").value;
@@ -546,19 +559,19 @@
           sec,        // Col B: Secuencia
           sec,        // Col C: Secuencia
           sec,        // Col D: Secuencia
-          op,         // Col E: Operación
-          ct,         // Col F: Recurso
-          desc,       // Col G: Descripcion
-          "0",        // Col H: SIEMPRE PONER 0
-          "0",        // Col I: SIEMPRE PONER 0
+          op,         // Col E: Operación (B de Configuración)
+          ct,         // Col F: Recurso (G de Configuración)
+          desc,       // Col G: Descripcion Detallada (C de Configuración)
+          "0",        // Col H: 0
+          "0",        // Col I: 0
           tiempo,     // Col J: Tiempo de Operación
-          "J",        // Col K: SIEMPRE PONER J
-          "1",        // Col L: SIEMPRE PONER 1
-          "1",        // Col M: SIEMPRE PONER 1
-          "PROD",     // Col N: SIEMPRE PONER PROD
-          "PROD",     // Col O: SIEMPRE PONER PROD
-          "PROD",     // Col P: SIEMPRE PONER PROD
-          obs,        // Col Q: Observaciones
+          "J",        // Col K: J
+          "1",        // Col L: 1
+          "1",        // Col M: 1
+          "PROD",     // Col N: PROD
+          "PROD",     // Col O: PROD
+          "PROD",     // Col P: PROD
+          obs,        // Col Q: Acción implementada
           notas,      // Col R: Notas
           nombre,     // Col S: Descripción del Artículo
           statusSAP   // Col T: Status en Archivo "Rutas Masivsa SAP"
@@ -566,7 +579,7 @@
       });
 
       msg.style.color = "#0284c7";
-      msg.textContent = "Enviando a Entrada_Web...";
+      msg.textContent = "Guardando en Entrada_Web...";
       btnGuardar.disabled = true;
 
       try {
