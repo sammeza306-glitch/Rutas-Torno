@@ -40,7 +40,6 @@
     }
     .btn-sync:hover { background: #0369a1; }
 
-    /* Barra superior idéntica a la imagen */
     .top-panel {
       padding: 12px 16px;
       background: #f8fafc;
@@ -65,6 +64,7 @@
       border-radius: 3px;
       width: 160px;
       text-transform: uppercase;
+      text-align: center;
     }
 
     select.item-list {
@@ -75,7 +75,6 @@
       max-width: 220px;
     }
 
-    /* Nombre del artículo grande y destacado (Columna S) */
     .item-name-banner {
       flex-grow: 1;
       min-width: 280px;
@@ -89,7 +88,6 @@
       border-radius: 3px;
     }
 
-    /* Tabla de operaciones compacta */
     .table-responsive {
       width: 100%;
       overflow-x: auto;
@@ -99,7 +97,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       white-space: nowrap;
     }
 
@@ -116,24 +114,35 @@
     }
 
     tbody td {
-      padding: 6px 10px;
+      padding: 8px 10px;
       border-right: 1px solid #e2e8f0;
       border-bottom: 1px solid #e2e8f0;
       color: #334155;
+      text-align: center; /* Todo el texto centrado */
+      vertical-align: middle;
     }
 
     tbody tr:nth-child(even) { background-color: #f8fafc; }
-    tbody tr:hover { background-color: #e0f2fe; }
+    tbody tr:hover { background-color: #f1f5f9; }
 
-    .center { text-align: center; }
-    .num { text-align: right; font-variant-numeric: tabular-nums; }
-    .badge-ct {
+    /* Estilo para las celdas combinadas de Notas y Estatus */
+    .merged-cell {
+      background-color: #ffffff !important;
+      font-weight: 500;
+      padding: 12px;
+      white-space: normal; /* Permite saltos de línea legibles */
+      max-width: 320px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .badge-status {
       display: inline-block;
-      padding: 2px 7px;
+      padding: 4px 10px;
       background: #dbeafe;
       color: #1e40af;
       font-weight: 700;
-      border-radius: 3px;
+      border-radius: 4px;
     }
   </style>
 </head>
@@ -145,7 +154,6 @@
       <button class="btn-sync" onclick="cargarDatos()">🔄 Recargar Hoja</button>
     </div>
 
-    <!-- Barra de búsqueda y visualización de Articulo -->
     <div class="top-panel">
       <span class="selector-label">Artículo:</span>
       <input type="text" id="inputArticulo" class="input-code" placeholder="Código..." list="listaCodigos" oninput="cambiarArticulo(this.value)">
@@ -156,30 +164,26 @@
         <option value="">-- Seleccionar --</option>
       </select>
 
-      <!-- Columna S destacada -->
       <div id="articuloNombre" class="item-name-banner">Selecciona un artículo</div>
     </div>
 
-    <!-- Tabla con las Columnas solicitadas -->
     <div class="table-responsive">
       <table>
         <thead>
           <tr>
-            <th style="width: 70px;" id="thB">B</th>
-            <th id="thC">C</th>
-            <th style="width: 110px;" id="thD">D</th>
-            <th style="width: 90px;" id="thE">E</th>
-            <th style="width: 90px;" id="thF">F</th>
-            <th style="width: 90px;" id="thG">G</th>
-            <th style="width: 90px;" id="thJ">J</th>
-            <th style="width: 90px;" id="thQ">Q</th>
-            <th style="width: 90px;" id="thR">R</th>
+            <th style="width: 80px;" id="thB">Secuencia</th>
+            <th id="thE">E</th>
+            <th id="thF">F</th>
+            <th id="thG">G</th>
+            <th id="thJ">J</th>
+            <th id="thQ">Notas</th>
+            <th id="thR">Status</th>
             <th id="thT">T</th>
           </tr>
         </thead>
         <tbody id="tablaBody">
           <tr>
-            <td colspan="10" style="text-align: center; padding: 40px; color: #64748b;">Cargando datos desde Google Sheets...</td>
+            <td colspan="8" style="padding: 40px; color: #64748b;">Cargando datos desde Google Sheets...</td>
           </tr>
         </tbody>
       </table>
@@ -188,7 +192,7 @@
 
   <script>
     // URL DE TU IMPLEMENTACIÓN DE GOOGLE APPS SCRIPT
-    const API_URL = "https://script.google.com/macros/s/AKfycbxtEj-NJi-efY3lq_A2pCrQRzo9A5ud27-9r296DrJ7g85bHTMM_D8zAaNfBxNUfIeKdQ/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbyiWKQByuhWXPNcYCix1gP-l0Cs2roXj7pehvqRVq1ZfG_7mRBf_qYemJ4jDO1Wti7ZwA/exec";
 
     let agrupadoPorArticulo = {};
     let nombresArticulos = {};
@@ -196,7 +200,7 @@
 
     async function cargarDatos() {
       const cuerpo = document.getElementById("tablaBody");
-      cuerpo.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 40px; color: #64748b;">Sincronizando información...</td></tr>';
+      cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 40px; color: #64748b;">Sincronizando información...</td></tr>';
 
       try {
         const res = await fetch(API_URL);
@@ -221,14 +225,12 @@
 
         poblarListas();
       } catch (err) {
-        cuerpo.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 40px; color: red;">Error al conectar con la hoja. Verifica tu conexión y permisos.</td></tr>';
+        cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 40px; color: red;">Error al conectar con la hoja. Verifica tu conexión y permisos.</td></tr>';
       }
     }
 
     function actualizarNombresEncabezados() {
       if (encabezados.hB) document.getElementById("thB").textContent = encabezados.hB;
-      if (encabezados.hC) document.getElementById("thC").textContent = encabezados.hC;
-      if (encabezados.hD) document.getElementById("thD").textContent = encabezados.hD;
       if (encabezados.hE) document.getElementById("thE").textContent = encabezados.hE;
       if (encabezados.hF) document.getElementById("thF").textContent = encabezados.hF;
       if (encabezados.hG) document.getElementById("thG").textContent = encabezados.hG;
@@ -275,36 +277,48 @@
 
       if (!agrupadoPorArticulo[codigo]) {
         nombreBanner.textContent = "Artículo no encontrado";
-        cuerpo.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 30px; color: #64748b;">No existen registros para este artículo.</td></tr>';
+        cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 30px; color: #64748b;">No existen registros para este artículo.</td></tr>';
         return;
       }
 
       nombreBanner.textContent = nombresArticulos[codigo] || "Artículo sin nombre";
       const rutas = agrupadoPorArticulo[codigo];
+      const totalFilas = rutas.length;
       cuerpo.innerHTML = "";
+
+      // Tomamos la primera nota y status no vacíos que tenga la pieza
+      const primeraNota = rutas.find(r => r.colQ && r.colQ !== "0" && r.colQ !== "0.00")?.colQ || "";
+      const primerStatus = rutas.find(r => r.colR && r.colR !== "0" && r.colR !== "0.00")?.colR || "";
 
       rutas.forEach((r, index) => {
         const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td class="center" style="font-weight: 700;">${r.colB || String(index + 1).padStart(2, "0")}</td>
-          <td>${r.colC}</td>
-          <td class="center"><span class="badge-ct">${r.colD}</span></td>
-          <td class="num">${formatearNumero(r.colE)}</td>
-          <td class="num">${formatearNumero(r.colF)}</td>
-          <td class="num">${formatearNumero(r.colG)}</td>
-          <td class="center">${r.colJ}</td>
-          <td class="num">${formatearNumero(r.colQ)}</td>
-          <td class="num">${formatearNumero(r.colR)}</td>
-          <td>${r.colT}</td>
+
+        let celdasHTML = `
+          <td style="font-weight: 700;">${r.colB || String(index + 1).padStart(2, "0")}</td>
+          <td>${limpiarValor(r.colE)}</td>
+          <td>${limpiarValor(r.colF)}</td>
+          <td>${limpiarValor(r.colG)}</td>
+          <td>${limpiarValor(r.colJ)}</td>
         `;
+
+        // En la primera fila creamos la celda combinada (rowspan) que abarca todas las operaciones
+        if (index === 0) {
+          celdasHTML += `
+            <td rowspan="${totalFilas}" class="merged-cell">${primeraNota}</td>
+            <td rowspan="${totalFilas}" class="merged-cell"><span class="badge-status">${primerStatus}</span></td>
+          `;
+        }
+
+        celdasHTML += `<td>${limpiarValor(r.colT)}</td>`;
+
+        tr.innerHTML = celdasHTML;
         cuerpo.appendChild(tr);
       });
     }
 
-    function formatearNumero(valor) {
-      if (valor === "" || valor === null || valor === undefined) return "0.00";
-      const num = Number(valor);
-      return !isNaN(num) ? num.toFixed(2) : valor;
+    function limpiarValor(valor) {
+      if (valor === "" || valor === null || valor === undefined || valor === "0.00") return "-";
+      return valor;
     }
 
     cargarDatos();
