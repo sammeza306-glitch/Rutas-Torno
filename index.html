@@ -4,145 +4,204 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rutas de Operación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+  
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", Tahoma, Arial, sans-serif; }
-    body { background-color: #eaedf1; padding: 18px; color: #1e293b; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+    }
+
+    body { 
+      background: #f1f5f9; 
+      padding: 24px; 
+      color: #0f172a; 
+      -webkit-font-smoothing: antialiased;
+    }
 
     .window {
       background: #ffffff;
-      border: 1px solid #94a3b8;
-      border-radius: 4px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      max-width: 1400px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+      max-width: 1440px;
       margin: 0 auto;
       overflow: hidden;
     }
 
     .window-title {
-      background: #f1f5f9;
-      border-bottom: 1px solid #cbd5e1;
-      padding: 8px 14px;
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 14px 20px;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 1.05rem;
+      color: #0f172a;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .btn-sync {
-      padding: 5px 12px;
+      padding: 8px 16px;
       background: #0284c7;
-      color: white;
+      color: #ffffff;
       border: none;
-      border-radius: 3px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease, transform 0.05s ease;
     }
-    .btn-sync:hover { background: #0369a1; }
+
+    .btn-sync:hover { 
+      background: #0369a1; 
+    }
+
+    .btn-sync:active {
+      transform: scale(0.98);
+    }
 
     .top-panel {
-      padding: 12px 16px;
+      padding: 16px 20px;
       background: #f8fafc;
-      border-bottom: 2px solid #cbd5e1;
+      border-bottom: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       flex-wrap: wrap;
     }
 
     .selector-label {
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: #334155;
+      font-weight: 600;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #64748b;
     }
 
     .input-code {
-      padding: 7px 10px;
+      padding: 8px 12px;
       font-size: 0.95rem;
-      font-weight: bold;
-      border: 1px solid #64748b;
-      border-radius: 3px;
-      width: 160px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      width: 170px;
       text-transform: uppercase;
       text-align: center;
+      background: #ffffff;
+      color: #0f172a;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .input-code:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
     }
 
     select.item-list {
-      padding: 7px 10px;
-      border: 1px solid #64748b;
-      border-radius: 3px;
-      font-size: 0.9rem;
-      max-width: 220px;
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      color: #1e293b;
+      background: #ffffff;
+      cursor: pointer;
+      max-width: 240px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    select.item-list:focus {
+      border-color: #0284c7;
     }
 
     .item-name-banner {
       flex-grow: 1;
       min-width: 280px;
       background: #ffffff;
-      border: 1px solid #cbd5e1;
+      border: 1px solid #e2e8f0;
       border-left: 4px solid #0284c7;
-      padding: 8px 14px;
-      font-size: 1.05rem;
+      padding: 10px 16px;
+      font-size: 1.02rem;
       font-weight: 700;
       color: #0f172a;
-      border-radius: 3px;
+      border-radius: 6px;
     }
 
     .table-responsive {
       width: 100%;
       overflow-x: auto;
-      max-height: 600px;
+      max-height: 650px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.84rem;
+      font-size: 0.86rem;
       white-space: nowrap;
     }
 
     thead th {
       position: sticky;
       top: 0;
-      background: #e2e8f0;
-      color: #0f172a;
-      font-weight: 700;
-      padding: 8px 10px;
-      border-right: 1px solid #cbd5e1;
-      border-bottom: 2px solid #94a3b8;
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 12px 14px;
+      border-bottom: 2px solid #e2e8f0;
+      border-right: 1px solid #f1f5f9;
       text-align: center;
+      z-index: 10;
     }
 
     tbody td {
-      padding: 8px 10px;
-      border-right: 1px solid #e2e8f0;
-      border-bottom: 1px solid #e2e8f0;
+      padding: 11px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      border-right: 1px solid #f1f5f9;
       color: #334155;
-      text-align: center; /* Todo el texto centrado */
+      text-align: center;
       vertical-align: middle;
     }
 
-    tbody tr:nth-child(even) { background-color: #f8fafc; }
-    tbody tr:hover { background-color: #f1f5f9; }
+    tbody tr:nth-child(even) { 
+      background-color: #fafbfd; 
+    }
 
-    /* Estilo para las celdas combinadas de Notas y Estatus */
+    tbody tr:hover { 
+      background-color: #f0f7ff; 
+    }
+
     .merged-cell {
       background-color: #ffffff !important;
       font-weight: 500;
-      padding: 12px;
-      white-space: normal; /* Permite saltos de línea legibles */
+      padding: 16px;
+      white-space: normal;
       max-width: 320px;
       text-align: center;
       vertical-align: middle;
+      border-left: 1px solid #f1f5f9;
     }
 
     .badge-status {
       display: inline-block;
-      padding: 4px 10px;
-      background: #dbeafe;
-      color: #1e40af;
-      font-weight: 700;
-      border-radius: 4px;
+      padding: 5px 12px;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 600;
+      font-size: 0.8rem;
+      border-radius: 9999px;
     }
   </style>
 </head>
@@ -150,7 +209,7 @@
 
   <div class="window">
     <div class="window-title">
-      <span>Rutas Operación</span>
+      <span>Rutas de Operación</span>
       <button class="btn-sync" onclick="cargarDatos()">🔄 Recargar Hoja</button>
     </div>
 
@@ -183,7 +242,7 @@
         </thead>
         <tbody id="tablaBody">
           <tr>
-            <td colspan="8" style="padding: 40px; color: #64748b;">Cargando datos desde Google Sheets...</td>
+            <td colspan="8" style="padding: 48px; color: #64748b;">Cargando datos desde Google Sheets...</td>
           </tr>
         </tbody>
       </table>
@@ -191,7 +250,6 @@
   </div>
 
   <script>
-    // URL DE TU IMPLEMENTACIÓN DE GOOGLE APPS SCRIPT
     const API_URL = "https://script.google.com/macros/s/AKfycbyiWKQByuhWXPNcYCix1gP-l0Cs2roXj7pehvqRVq1ZfG_7mRBf_qYemJ4jDO1Wti7ZwA/exec";
 
     let agrupadoPorArticulo = {};
@@ -200,7 +258,7 @@
 
     async function cargarDatos() {
       const cuerpo = document.getElementById("tablaBody");
-      cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 40px; color: #64748b;">Sincronizando información...</td></tr>';
+      cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 48px; color: #64748b;">Sincronizando información...</td></tr>';
 
       try {
         const res = await fetch(API_URL);
@@ -225,7 +283,7 @@
 
         poblarListas();
       } catch (err) {
-        cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 40px; color: red;">Error al conectar con la hoja. Verifica tu conexión y permisos.</td></tr>';
+        cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 48px; color: #ef4444;">Error al conectar con la hoja. Verifica tu conexión y permisos.</td></tr>';
       }
     }
 
@@ -265,7 +323,7 @@
       }
     }
 
-function cambiarArticulo(codigo) {
+    function cambiarArticulo(codigo) {
       codigo = codigo.trim().toUpperCase();
       const cuerpo = document.getElementById("tablaBody");
       const nombreBanner = document.getElementById("articuloNombre");
@@ -277,7 +335,7 @@ function cambiarArticulo(codigo) {
 
       if (!agrupadoPorArticulo[codigo]) {
         nombreBanner.textContent = "Artículo no encontrado";
-        cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 30px; color: #64748b;">No existen registros para este artículo.</td></tr>';
+        cuerpo.innerHTML = '<tr><td colspan="8" style="padding: 36px; color: #64748b;">No existen registros para este artículo.</td></tr>';
         return;
       }
 
@@ -286,16 +344,14 @@ function cambiarArticulo(codigo) {
       const totalFilas = rutas.length;
       cuerpo.innerHTML = "";
 
-      // Tomamos el valor de R y T (primer valor no vacío de la pieza para la celda combinada)
       const valorR = rutas.find(r => r.colR && r.colR !== "0" && r.colR !== "0.00")?.colR || "-";
       const valorT = rutas.find(r => r.colT && r.colT !== "0" && r.colT !== "0.00")?.colT || "-";
 
       rutas.forEach((r, index) => {
         const tr = document.createElement("tr");
 
-        // Columnas estándar de cada fila (B, E, F, G, J y ahora Q por fila)
         let celdasHTML = `
-          <td style="font-weight: 700;">${r.colB || String(index + 1).padStart(2, "0")}</td>
+          <td style="font-weight: 700; font-family: 'JetBrains Mono', monospace;">${r.colB || String(index + 1).padStart(2, "0")}</td>
           <td>${limpiarValor(r.colE)}</td>
           <td>${limpiarValor(r.colF)}</td>
           <td>${limpiarValor(r.colG)}</td>
@@ -303,7 +359,6 @@ function cambiarArticulo(codigo) {
           <td>${limpiarValor(r.colQ)}</td>
         `;
 
-        // Columnas R y T combinadas verticalmente para toda la pieza
         if (index === 0) {
           celdasHTML += `
             <td rowspan="${totalFilas}" class="merged-cell"><span class="badge-status">${valorR}</span></td>
